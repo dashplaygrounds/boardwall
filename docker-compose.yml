@@ -1,0 +1,41 @@
+services:
+  app:
+    image: boardwall-aio:latest
+    container_name: boardwall-aio
+    ports:
+      - "4221:80"
+      - "8888:8080"
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+    networks:
+      - datanet
+    restart: always
+
+  db:
+    image: postgres:15
+    container_name: postgres-general
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: boardwall
+    ports:
+      - "8432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - datanet
+    restart: always
+  # redis:
+  #   image: redis:7
+  #   container_name: boardwall-redis
+  #   ports:
+  #     - "6379:6379"
+
+volumes:
+  db_data:
+
+networks:
+  datanet:
+    external: true

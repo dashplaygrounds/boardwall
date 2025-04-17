@@ -1,0 +1,60 @@
+@startuml
+
+' Define User entity
+class User {
+    +id: UUID
+    +username: String
+    +email: String
+    +passwordHash: String
+    +createdAt: DateTime
+    +updatedAt: DateTime
+}
+
+' Define BoardGroup entity
+class BoardGroup {
+    +id: UUID
+    +name: String
+    +description: String
+    +createdAt: DateTime
+    +updatedAt: DateTime
+    +ownerId: UUID
+}
+
+' Define Board entity
+class Board {
+    +id: UUID
+    +name: String
+    +description: String
+    +boardGroupId: UUID
+    +createdAt: DateTime
+    +updatedAt: DateTime
+}
+
+' Define Column entity
+class Category {
+    +id: UUID
+    +name: String
+    +position: Integer
+    +boardId: UUID
+    +createdAt: DateTime
+    +updatedAt: DateTime
+}
+
+' Define StickyNote entity
+class StickyNote {
+    +id: UUID
+    +content: String
+    +color: String
+    +position: Integer
+    +categoryId: UUID
+    +createdAt: DateTime
+    +updatedAt: DateTime
+}
+
+' Define relationships
+User "1" -- "0..*" BoardGroup : owns
+BoardGroup "1" -- "0..*" Board : contains
+Board "1" -- "0..*" Category : contains
+Category "1" -- "0..*" StickyNote : contains
+
+@enduml
