@@ -10,8 +10,8 @@ class User {
     +updatedAt: DateTime
 }
 
-' Define BoardGroup entity
-class BoardGroup {
+' Define BoardWall entity
+class BoardWall {
     +id: UUID
     +name: String
     +description: String
@@ -20,22 +20,22 @@ class BoardGroup {
     +ownerId: UUID
 }
 
-' Define Board entity
-class Board {
-    +id: UUID
-    +name: String
-    +description: String
-    +boardGroupId: UUID
-    +createdAt: DateTime
-    +updatedAt: DateTime
-}
-
 ' Define Column entity
 class Category {
     +id: UUID
     +name: String
     +position: Integer
-    +boardId: UUID
+    +boardWallId: UUID
+    +createdAt: DateTime
+    +updatedAt: DateTime
+}
+
+' Define Board entity
+class Board {
+    +id: UUID
+    +name: String
+    +description: String
+    +categoryId: UUID
     +createdAt: DateTime
     +updatedAt: DateTime
 }
@@ -46,15 +46,21 @@ class StickyNote {
     +content: String
     +color: String
     +position: Integer
-    +categoryId: UUID
+    +boardId: UUID
     +createdAt: DateTime
     +updatedAt: DateTime
 }
 
+class Canvas {
+    +id: UUID
+}
+
 ' Define relationships
-User "1" -- "0..*" BoardGroup : owns
-BoardGroup "1" -- "0..*" Board : contains
-Board "1" -- "0..*" Category : contains
-Category "1" -- "0..*" StickyNote : contains
+User "1" -- "1" BoardWall : owns
+BoardWall "1" -- "1..*" Category : contains
+Category "1" -- "1..*" Board : contains
+Board "1" -- "0..*" StickyNote : contains
+
+Canvas "1" -- "1..*" Board : displays
 
 @enduml

@@ -1,8 +1,8 @@
 version: '3'
 
 env:
-  VERSION: "v1.1.2"
-  MESSAGE: "boardwall > added working files"
+  VERSION: "v1.1.3"
+  MESSAGE: "boardwall > frontend > angular cdk drag and drop"
 
 tasks:
   commit:
@@ -12,6 +12,7 @@ tasks:
       - git commit -m "{{.VERSION}} $MESSAGE"
       - git push -f
       - git tag -a "{{.VERSION}}" -m "Version {{.VERSION}}"
+      - git push -u origin --tags
 
   run:frontend:
     desc: Run the frontend application
@@ -44,11 +45,13 @@ tasks:
     desc: Build boardwall-aio
     dotenv: ['.env']
     cmds:
+      - mv frontend/node_modules .
       - docker stop boardwall-aio
       # - docker rmi $(docker images -f "dangling=true")
       - docker build -t boardwall-aio:latest -f Dockerfile .
       # - docker network create datanet
       - docker compose -f docker-compose.yml up -d
+      - mv node_modules frontend/
       - docker logs -f boardwall-aio
   
   stop:

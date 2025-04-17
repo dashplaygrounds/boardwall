@@ -1,0 +1,13 @@
+<div class="example-box"
+    cdkDragBoundary=".example-boundary"
+    [cdkDragFreeDragPosition]="dragPosition"
+    (cdkDragMoved)="onDragMoved($event)"
+    (cdkDragReleased)="onDragReleased($event)"
+    cdkDrag
+    #blue
+    >
+    <div>
+        <h6>{{noteTitle}}</h6>
+        <p>{{noteContent}}</p>
+    </div>
+</div>

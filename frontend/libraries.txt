@@ -1,0 +1,6 @@
+bootstrap@5
+bootstrap-icons
+@popperjs/core
+@angular/material
+@angular/cdk
+@angular/animations

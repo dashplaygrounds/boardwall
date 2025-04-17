@@ -1,0 +1,17 @@
+<div class="example-boundary">
+    <p>
+        <button (click)="changePosition()">Change element position</button>
+    </p>
+
+
+    <app-sticky-note *ngFor="let note of stickyNotes" 
+        (reportNoteEvent)="reportNote($event)" 
+        [noteId]="note.id"
+        [noteColor]="note.color" 
+        [noteTitle]="note.title" 
+        [noteContent]="note.content"
+        [notePosition]="note.position"
+        [note]="note"
+        [allNotes]="stickyNotes"
+        ></app-sticky-note>
+</div>
