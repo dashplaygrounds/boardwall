@@ -2,7 +2,7 @@
 FROM node:18 AS angular-build
 WORKDIR /app
 COPY frontend/package*.json ./
-RUN npm install
+RUN npm install --save-dev --force
 COPY frontend/ .
 RUN npm run build
 
