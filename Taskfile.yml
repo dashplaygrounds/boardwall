@@ -1,7 +1,7 @@
 version: '3'
 
 env:
-  VERSION: "1.1.0"
+  VERSION: "v1.1.1"
   MESSAGE: "boardwall > added working files"
 
 tasks:
@@ -44,7 +44,8 @@ tasks:
     desc: Build boardwall-aio
     dotenv: ['.env']
     cmds:
-      # - docker stop boardwall-aio
+      - docker stop boardwall-aio
+      # - docker rmi $(docker images -f "dangling=true")
       - docker build -t boardwall-aio:latest -f Dockerfile .
       # - docker network create datanet
       - docker compose -f docker-compose.yml up -d

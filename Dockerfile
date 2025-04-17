@@ -21,5 +21,4 @@ WORKDIR /app
 COPY --from=springboot-build /app/target/*.jar app.jar
 COPY --from=angular-build /app/dist/boardwall/browser /usr/share/nginx/html
 EXPOSE 80 8080
-CMD ["nginx", "-g", "daemon off;"]
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD nginx & java -jar app.jar
