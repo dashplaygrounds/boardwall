@@ -12,8 +12,9 @@ tasks:
       - git commit -m "{{.VERSION}} $MESSAGE"
       - git push -f
       - git tag -d "{{.VERSION}}"
+      - git push origin --delete "{{.VERSION}}"
       - git tag -a "{{.VERSION}}" -m "Version {{.VERSION}}"
-      - git push -u origin --tags
+      - git push -uf origin --tags
 
   run:frontend:
     desc: Run the frontend application
