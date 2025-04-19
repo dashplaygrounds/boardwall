@@ -2,16 +2,18 @@
 
 Create `.env` 
 ```bash
-SERVER_PORT=8080
-JDBC_DB_URL=jdbc:postgresql://db:5432/boardwall?useSSL=false&serverTimezone=UTC
+# SERVER_PORT=8080
+DB_HOST=db
+DB_PORT=5432
 DB_USERNAME=postgres
 DB_PASSWORD=postgres
 ```
 
 and `.env.dev`
 ```bash
-SERVER_PORT=8080
-JDBC_DB_URL=jdbc:postgresql://localhost:8432/boardwall?useSSL=false&serverTimezone=UTC
+# SERVER_PORT=8080
+DB_HOST=localhost
+DB_PORT=8432
 DB_USERNAME=postgres
 DB_PASSWORD=postgres
 ```

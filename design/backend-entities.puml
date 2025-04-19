@@ -1,66 +1,67 @@
 @startuml
 
-' Define User entity
-class User {
-    +id: UUID
+' Define UserAccount entity
+class UserAccount {
+    +id: Long
     +username: String
     +email: String
     +passwordHash: String
-    +createdAt: DateTime
-    +updatedAt: DateTime
+    +createdAt: ZonedDateTime
+    +updatedAt: ZonedDateTime
 }
 
 ' Define BoardWall entity
 class BoardWall {
-    +id: UUID
+    +id: Long
     +name: String
+    +sharedAccounts: List<String>
     +description: String
-    +createdAt: DateTime
-    +updatedAt: DateTime
-    +ownerId: UUID
+    +userAccountId: Long
+    +createdAt: ZonedDateTime
+    +updatedAt: ZonedDateTime
 }
 
 ' Define Column entity
 class Category {
-    +id: UUID
+    +id: Long
     +name: String
     +position: Integer
-    +boardWallId: UUID
-    +createdAt: DateTime
-    +updatedAt: DateTime
+    +boardWallId: Long
+    +createdAt: ZonedDateTime
+    +updatedAt: ZonedDateTime
 }
 
 ' Define Board entity
 class Board {
-    +id: UUID
+    +id: Long
     +name: String
     +description: String
-    +categoryId: UUID
-    +createdAt: DateTime
-    +updatedAt: DateTime
+    +categoryId: Long
+    +createdAt: ZonedDateTime
+    +updatedAt: ZonedDateTime
 }
 
 ' Define StickyNote entity
 class StickyNote {
-    +id: UUID
+    +id: Long
     +content: String
     +color: String
-    +position: Integer
-    +boardId: UUID
-    +createdAt: DateTime
-    +updatedAt: DateTime
+    +position: HashMap<Float,Float>
+    +boardId: Long
+    +createdAt: ZonedDateTime
+    +updatedAt: ZonedDateTime
 }
 
-class Canvas {
-    +id: UUID
+class CanvasEditor {
+    +id: Long
 }
 
 ' Define relationships
-User "1" -- "1" BoardWall : owns
+UserAccount "1..*" -- "1..*" BoardWall : accesses
 BoardWall "1" -- "1..*" Category : contains
 Category "1" -- "1..*" Board : contains
 Board "1" -- "0..*" StickyNote : contains
 
-Canvas "1" -- "1..*" Board : displays
+CanvasEditor "1" -- "1..*" Board : displays
 
 @enduml
