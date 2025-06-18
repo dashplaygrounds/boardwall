@@ -123,66 +123,6 @@ export class ImportExportComponent {
   }
 
 
-  exportData() {
-    // const currentDateTime = new Date().toISOString().split('.')[0].replace(/[:]/g, '-');
-    const currentDateTime = CustomZonedDateTimeUtil.nowInZone(Constants.TIME_ZONE).split('.')[0].replace(/[:]/g, '-');
-    let zipfiles = [];
-
-    const zipPromises = this.chosenBoardIdsForExport.map((boardId) => {
-      return new Promise<void>((resolve, reject) => {
-        this.boardService.getBoardById(boardId).subscribe({
-          next: (board) => {
-            const zip = new JSZip();
-            const boardFileName = `${board.name}_${currentDateTime}_info.json`;
-            zip.file(boardFileName, JSON.stringify(board, null, 2));
-
-
-            this.backupService.getStickyNotesByBoardId(boardId).subscribe({
-              next: (stickyNotes) => {
-                const stickyNotesFileName = `${board.name}_${currentDateTime}_stickynotes.json`;
-                zip.file(stickyNotesFileName, JSON.stringify(stickyNotes, null, 2));
-
-                zip.generateAsync({ type: 'blob' }).then((content) => {
-                  const zipFileName = `board_${board.name}_${currentDateTime}.zip`;
-                  zipfiles.push({ name: zipFileName, content: content });
-                  resolve();
-                }).catch((err) => {
-                  console.error(`Error generating zip for board ${boardId}, ${board.name}:`, err);
-                });
-              },
-              error: (err) => {
-                console.error(`Error fetching sticky notes for board ${boardId}, ${board.name}:`, err);
-              }
-            });
-
-
-          }
-        });
-
-      });
-
-    });
-
-    Promise.all(zipPromises).then(() => {
-      const allBoardsZip = new JSZip();
-      zipfiles.forEach((zipFile) => {
-        allBoardsZip.file(zipFile.name, zipFile.content);
-      });
-
-      allBoardsZip.generateAsync({ type: 'blob' }).then((content) => {
-        const allBoardsZipFileName = `all_boards_${currentDateTime}.zip`;
-        saveAs(content, allBoardsZipFileName);
-        console.log(`Exported all boards successfully.`);
-
-      }).catch((err) => {
-        console.error(`Error generating zip for all boards:`, err);
-      });
-    }).catch((err) => {
-      console.error(`Error exporting boards:`, err);
-    });
-
-  }
-
   onZipFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) {
@@ -274,21 +214,84 @@ export class ImportExportComponent {
           } finally {
             if (jsoncounter % 2 === 0) {
               console.log('Importing board data...');
+              // console.log("Here3a:", localStorage.getItem('importedBoardInfo'));
+              // console.log("Here3b:", localStorage.getItem('importedStickyNotes'));
               this.importBoardData('program');
             }
           }
 
-
         }
-
 
       } catch (error) {
         console.error('Error importing zip file:', error);
+      } finally {
+        localStorage.removeItem('importedBoardInfo');
+        localStorage.removeItem('importedStickyNotes');
+        this.isSelectedZip = false;
       }
     };
     reader.readAsArrayBuffer(this.zipFile);
   }
 
 
+  exportData() {
+    // const currentDateTime = new Date().toISOString().split('.')[0].replace(/[:]/g, '-');
+    const currentDateTime = CustomZonedDateTimeUtil.nowInZone(Constants.TIME_ZONE).split('.')[0].replace(/[:]/g, '-');
+    let zipfiles = [];
+
+    const zipPromises = this.chosenBoardIdsForExport.map((boardId) => {
+      return new Promise<void>((resolve, reject) => {
+        this.boardService.getBoardById(boardId).subscribe({
+          next: (board) => {
+            const zip = new JSZip();
+            const boardFileName = `${board.name}_${currentDateTime}_info.json`;
+            zip.file(boardFileName, JSON.stringify(board, null, 2));
+
+
+            this.backupService.getStickyNotesByBoardId(boardId).subscribe({
+              next: (stickyNotes) => {
+                const stickyNotesFileName = `${board.name}_${currentDateTime}_stickynotes.json`;
+                zip.file(stickyNotesFileName, JSON.stringify(stickyNotes, null, 2));
+
+                zip.generateAsync({ type: 'blob' }).then((content) => {
+                  const zipFileName = `board_${board.name}_${currentDateTime}.zip`;
+                  zipfiles.push({ name: zipFileName, content: content });
+                  resolve();
+                }).catch((err) => {
+                  console.error(`Error generating zip for board ${boardId}, ${board.name}:`, err);
+                });
+              },
+              error: (err) => {
+                console.error(`Error fetching sticky notes for board ${boardId}, ${board.name}:`, err);
+              }
+            });
+
+
+          }
+        });
+
+      });
+
+    });
+
+    Promise.all(zipPromises).then(() => {
+      const allBoardsZip = new JSZip();
+      zipfiles.forEach((zipFile) => {
+        allBoardsZip.file(zipFile.name, zipFile.content);
+      });
+
+      allBoardsZip.generateAsync({ type: 'blob' }).then((content) => {
+        const allBoardsZipFileName = `all_boards_${currentDateTime}.zip`;
+        saveAs(content, allBoardsZipFileName);
+        console.log(`Exported all boards successfully.`);
+
+      }).catch((err) => {
+        console.error(`Error generating zip for all boards:`, err);
+      });
+    }).catch((err) => {
+      console.error(`Error exporting boards:`, err);
+    });
+
+  }
 
 }
