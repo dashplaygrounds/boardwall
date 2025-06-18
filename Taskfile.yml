@@ -92,6 +92,7 @@ tasks:
       ARCH: "amd64"
     cmds:
       - |
+        HOST_IP=$(hostname -I | awk '{print $1}')
         cp .env.2 .env
         mv frontend/node_modules .
         # docker stop boardwall-aio-${ARCH}-2
