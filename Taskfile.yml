@@ -1,9 +1,10 @@
 version: '3'
 
 env:
-  VERSION: "v1.0.0"
+  VERSION: "v1.1.0"
   MESSAGE: |
-    * Initial release of Boardwall
+    * updated Dockerfile
+    * Batch import
 
   DB_HOST: "localhost"
   DB_PORT: "8432"
@@ -32,6 +33,12 @@ tasks:
     dir: frontend
     dotenv: ['../.env.dev']
     cmds:
+      - |
+        if [ -d node_modules ]; then
+          echo "node_modules already exists, skipping installation"
+        else
+          yarn install --frozen-lockfile
+        fi
       - yarn run start:dev
 
   run:backend:

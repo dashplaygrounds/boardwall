@@ -1,17 +1,17 @@
 services:
-  boardwall-1:
-    image: boardwall-aio:latest-${ARCH}
-    container_name: boardwall-aio-${ARCH}-1
-    ports:
-      - "4221:80"
-      - "8888:8080"
-    env_file:
-      - ./.env.1
-    # depends_on:
-    #   - db
-    networks:
-      - pnet
-    restart: always
+  # boardwall-1:
+  #   image: boardwall-aio:latest-${ARCH}
+  #   container_name: boardwall-aio-${ARCH}-1
+  #   ports:
+  #     - "4221:80"
+  #     - "8888:8080"
+  #   env_file:
+  #     - ./.env.1
+  #   # depends_on:
+  #   #   - db
+  #   networks:
+  #     - pnet
+  #   restart: always
 
   db:
     image: postgres:15

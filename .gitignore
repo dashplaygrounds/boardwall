@@ -1,0 +1,26 @@
+*.env.*
+.angular
+*node_modules*
+# Spring Boot
+/target/
+*.jar
+*.war
+*.iml
+*.class
+/.mvn/
+/.mvn/wrapper/maven-wrapper.jar
+/logs/
+/*.log
+
+# Angular
+/dist/
+/out-tsc/
+/coverage/
+!.angular/cache
+/tmp/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.idea/
+.vscode/
+.DS_Store
