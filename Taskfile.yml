@@ -37,7 +37,7 @@ tasks:
         if [ -d node_modules ]; then
           echo "node_modules already exists, skipping installation"
         else
-          yarn install --frozen-lockfile
+          yarn install
         fi
       - yarn run start:dev
 
